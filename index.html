@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do Сервис</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .to-do {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    .to-do__header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 30px;
+      text-align: center;
+    }
+
+    .to-do__title {
+      color: white;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .to-do__form {
+      display: flex;
+      gap: 10px;
+    }
+
+    .to-do__form-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+      transition: box-shadow 0.2s;
+    }
+
+    .to-do__form-input:focus {
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+    }
+
+    .to-do__form-button {
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .to-do__form-button:hover {
+      background: #ff5252;
+      transform: translateY(-2px);
+    }
+
+    .to-do__list {
+      list-style: none;
+      padding: 20px;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    .to-do__item {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .to-do__item:hover {
+      transform: translateX(5px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .to-do__item-text {
+      flex: 1;
+      font-size: 16px;
+      color: #333;
+      word-break: break-word;
+      outline: none;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+
+    .to-do__item-text[contenteditable="true"] {
+      background: white;
+      border: 2px solid #667eea;
+      padding: 4px 8px;
+    }
+
+    .to-do__item-button {
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background-size: 20px;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .to-do__item-button_type_edit {
+      background-color: #4ecdc4;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'%3E%3C/path%3E%3C/svg%3E");
+    }
+
+    .to-do__item-button_type_duplicate {
+      background-color: #45b7d1;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z'%3E%3C/path%3E%3C/svg%3E");
+    }
+
+    .to-do__item-button_type_delete {
+      background-color: #ff6b6b;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'%3E%3C/path%3E%3C/svg%3E");
+    }
+
+    .to-do__item-button:hover {
+      transform: scale(1.05);
+      filter: brightness(0.95);
+    }
+
+    .empty-message {
+      text-align: center;
+      color: #999;
+      padding: 40px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="to-do">
+      <div class="to-do__header">
+        <h1 class="to-do__title">📝 Список дел</h1>
+        <form class="to-do__form" id="to-do__form">
+          <input type="text" class="to-do__form-input" id="to-do__form-input" placeholder="Добавить новую задачу..." autocomplete="off">
+          <button type="submit" class="to-do__form-button">Добавить</button>
+        </form>
+      </div>
+      <ul class="to-do__list" id="to-do__list"></ul>
+    </div>
+  </div>
+
+  <template id="to-do__item-template">
+    <li class="to-do__item">
+      <span class="to-do__item-text"></span>
+      <button class="to-do__item-button to-do__item-button_type_edit" aria-label="Редактировать"></button>
+      <button class="to-do__item-button to-do__item-button_type_duplicate" aria-label="Копировать"></button>
+      <button class="to-do__item-button to-do__item-button_type_delete" aria-label="Удалить"></button>
+    </li>
+  </template>
+
+  <script src="index.js"></script>
+</body>
+</html>
