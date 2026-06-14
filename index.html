@@ -1,187 +1,189 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>To-Do Сервис</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Mesto</title>
+    <script type="module" crossorigin src="./assets/index-D_TlmCzz.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DNbS4tJ4.css">
+  </head>
+  <body class="page">
+    <div class="page__content">
+      <header class="header page__section">
+        <img
+          src="./assets/logo-C_QQpFK1.svg"
+          alt="Логотип проекта место"
+          class="logo header__logo"
+        />
+      </header>
+      <main class="content">
+        <section class="profile page__section">
+          <div class="profile__image"></div>
+          <div class="profile__info">
+            <h1 class="profile__title"></h1>
+            <button class="profile__edit-button" type="button"></button>
+            <p class="profile__description"></p>
+          </div>
+          <button class="profile__add-button" type="button"></button>
+        </section>
+        <section class="places page__section">
+          <ul class="places__list"></ul>
+        </section>
+      </main>
+      <footer class="footer page__section">
+        <p class="footer__copyright">© 2025 Mesto Russia</p>
+      </footer>
 
-    body {
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      padding: 20px;
-    }
-
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    .to-do {
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      overflow: hidden;
-    }
-
-    .to-do__header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      padding: 30px;
-      text-align: center;
-    }
-
-    .to-do__title {
-      color: white;
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 20px;
-    }
-
-    .to-do__form {
-      display: flex;
-      gap: 10px;
-    }
-
-    .to-do__form-input {
-      flex: 1;
-      padding: 12px 16px;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      outline: none;
-      transition: box-shadow 0.2s;
-    }
-
-    .to-do__form-input:focus {
-      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
-    }
-
-    .to-do__form-button {
-      background: #ff6b6b;
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.2s, background 0.2s;
-    }
-
-    .to-do__form-button:hover {
-      background: #ff5252;
-      transform: translateY(-2px);
-    }
-
-    .to-do__list {
-      list-style: none;
-      padding: 20px;
-      max-height: 500px;
-      overflow-y: auto;
-    }
-
-    .to-do__item {
-      background: #f8f9fa;
-      border-radius: 12px;
-      padding: 16px 20px;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .to-do__item:hover {
-      transform: translateX(5px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .to-do__item-text {
-      flex: 1;
-      font-size: 16px;
-      color: #333;
-      word-break: break-word;
-      outline: none;
-      padding: 4px 8px;
-      border-radius: 6px;
-      transition: background 0.2s;
-    }
-
-    .to-do__item-text[contenteditable="true"] {
-      background: white;
-      border: 2px solid #667eea;
-      padding: 4px 8px;
-    }
-
-    .to-do__item-button {
-      width: 36px;
-      height: 36px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.2s;
-      background-size: 20px;
-      background-repeat: no-repeat;
-      background-position: center;
-    }
-
-    .to-do__item-button_type_edit {
-      background-color: #4ecdc4;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'%3E%3C/path%3E%3C/svg%3E");
-    }
-
-    .to-do__item-button_type_duplicate {
-      background-color: #45b7d1;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z'%3E%3C/path%3E%3C/svg%3E");
-    }
-
-    .to-do__item-button_type_delete {
-      background-color: #ff6b6b;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'%3E%3C/path%3E%3C/svg%3E");
-    }
-
-    .to-do__item-button:hover {
-      transform: scale(1.05);
-      filter: brightness(0.95);
-    }
-
-    .empty-message {
-      text-align: center;
-      color: #999;
-      padding: 40px;
-      font-size: 16px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="to-do">
-      <div class="to-do__header">
-        <h1 class="to-do__title">📝 Список дел</h1>
-        <form class="to-do__form" id="to-do__form">
-          <input type="text" class="to-do__form-input" id="to-do__form-input" placeholder="Добавить новую задачу..." autocomplete="off">
-          <button type="submit" class="to-do__form-button">Добавить</button>
-        </form>
+      <div class="popup popup_type_edit">
+        <div class="popup__content">
+          <button type="button" class="popup__close"></button>
+          <h3 class="popup__title">Редактировать профиль</h3>
+          <form class="popup__form" name="edit-profile">
+            <label class="popup__label">
+              <input
+                type="text"
+                name="name"
+                id="user-name"
+                class="popup__input popup__input_type_name"
+                placeholder="Имя"
+              />
+            </label>
+            <label class="popup__label">
+              <input
+                type="text"
+                name="description"
+                id="user-description"
+                class="popup__input popup__input_type_description"
+                placeholder="Занятие"
+              />
+            </label>
+            <button
+              type="submit"
+              class="button popup__button"
+            >
+              Сохранить
+            </button>
+          </form>
+        </div>
       </div>
-      <ul class="to-do__list" id="to-do__list"></ul>
+
+      <div class="popup popup_type_new-card">
+        <div class="popup__content">
+          <button type="button" class="popup__close"></button>
+          <h3 class="popup__title">Новое место</h3>
+          <form class="popup__form" name="new-place">
+            <label class="popup__label">
+              <input
+                type="text"
+                name="place-name"
+                id="place-name"
+                class="popup__input popup__input_type_card-name"
+                placeholder="Название"
+              />
+            </label>
+            <label class="popup__label">
+              <input
+                type="url"
+                name="link"
+                id="place-link"
+                class="popup__input popup__input_type_url"
+                placeholder="Ссылка на картинку"
+              />
+            </label>
+            <button
+              type="submit"
+              class="button popup__button"
+            >
+              Создать
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="popup popup_type_image">
+        <div class="popup__content popup__content_content_image">
+          <button type="button" class="popup__close"></button>
+          <img src="" alt="" class="popup__image" />
+          <p class="popup__caption"></p>
+        </div>
+      </div>
+
+      <div class="popup popup_type_remove-card">
+        <div class="popup__content">
+          <button type="button" class="popup__close"></button>
+          <h3 class="popup__title">Вы уверены?</h3>
+          <form class="popup__form" name="remove-card" novalidate>
+            <button type="submit" class="button popup__button">Да</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="popup popup_type_edit-avatar">
+        <div class="popup__content">
+          <button type="button" class="popup__close"></button>
+          <h3 class="popup__title">Обновить аватар</h3>
+          <form class="popup__form" name="edit-avatar">
+            <label class="popup__label">
+              <input
+                type="url"
+                name="avatar"
+                id="user-avatar"
+                class="popup__input popup__input_type_avatar"
+                placeholder="Ссылка на изображение"
+              />
+            </label>
+            <button
+              type="submit"
+              class="button popup__button"
+            >
+              Сохранить
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="popup popup_type_info">
+        <div class="popup__content popup__content_content_info">
+          <button type="button" class="popup__close"></button>
+          <h3 class="popup__title"></h3>
+          <dl class="popup__info"></dl>
+          <h4 class="popup__text"></h4>
+          <ul class="popup__list"></ul>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <template id="to-do__item-template">
-    <li class="to-do__item">
-      <span class="to-do__item-text"></span>
-      <button class="to-do__item-button to-do__item-button_type_edit" aria-label="Редактировать"></button>
-      <button class="to-do__item-button to-do__item-button_type_duplicate" aria-label="Копировать"></button>
-      <button class="to-do__item-button to-do__item-button_type_delete" aria-label="Удалить"></button>
-    </li>
-  </template>
 
-  <script src="index.js"></script>
-</body>
+    <template id="card-template">
+      <li class="places__item card">
+        <img class="card__image" src="" alt="" />
+        <div class="card__control">
+          <button type="button" class="card__control-button card__control-button_type_info"></button>
+          <button type="button" class="card__control-button card__control-button_type_delete"></button>
+        </div>
+        <div class="card__description">
+          <h2 class="card__title"></h2>
+          <div class="card__likes">
+            <button type="button" class="card__like-button"></button>
+            <p class="card__like-count"></p>
+          </div>
+        </div>
+      </li>
+    </template>
+
+    <template id="popup-info-definition-template">
+      <div class="popup__info-item">
+        <dt class="popup__info-term"></dt>
+        <dd class="popup__info-description"></dd>
+      </div>
+    </template>
+
+    <template id="popup-info-user-preview-template">
+      <li class="popup__list-item popup__list-item_type_badge"></li>
+    </template>
+  </body>
 </html>
